@@ -1,33 +1,70 @@
+import { useState } from "react";
 import "./Grid.css";
-//import { useState } from "react";
 
 const GRID_ROW_LENGTH = 50;
-const GRID_COL_LENGTH = 20;
+const GRID_COL_LENGTH = 21;
+let styleMap = new Map<number, {}>([
+  [0, { backgroundColor: "white" }],
+  [1, { backgroundColor: "black" }],
+  [2, { backgroundColor: "green" }],
+  [3, { backgroundColor: "red" }],
+]);
 
 interface CellProps {
-  innerText: string;
+  cellType: number;
+  onClick: () => void;
 }
-const Cell = ({ innerText }: CellProps) => {
-  return <div className="cell">{innerText}</div>;
+const Cell = ({ cellType, onClick }: CellProps) => {
+  const [styles, setStyles] = useState(styleMap.get(cellType));
+
+  return (
+    <div
+      className="cell"
+      onClick={() => {
+        onClick();
+        if (cellType == 0) {
+          cellType = 1;
+          setStyles(styleMap.get(cellType));
+        } else if (cellType == 1) {
+          cellType = 0;
+          setStyles(styleMap.get(cellType));
+        }
+      }}
+      style={styles}
+    ></div>
+  );
 };
 
-const Grid = () => {
-  const grid = [];
-  let count = 0;
+interface GridProps {
+  className: string;
+}
+
+const Grid = ({ className }: GridProps) => {
+  let grid: number[][] = [];
   for (let i = 0; i < GRID_COL_LENGTH; i++) {
-    const row = [];
+    grid[i] = [];
     for (let j = 0; j < GRID_ROW_LENGTH; j++) {
-      row.push(count++);
+      grid[i][j] = 0;
     }
-    grid.push(row);
   }
+  grid[10][5] = 2;
+  grid[10][45] = 3;
+
+  let count = 0;
   return (
-    <div>
-      {grid.map((row) => {
+    <div className={className}>
+      {grid.map((row, rowNum) => {
         return (
-          <div className="row">
-            {row.map((j) => (
-              <Cell innerText={String(j)}></Cell>
+          <div className="row" key={rowNum}>
+            {row.map((cellType, cellNum) => (
+              <Cell
+                key={count++}
+                cellType={cellType}
+                onClick={() => {
+                  if (cellType == 0) grid[rowNum][cellNum] = 1;
+                  else if (cellType == 1) grid[rowNum][cellNum] = 0;
+                }}
+              ></Cell>
             ))}
           </div>
         );

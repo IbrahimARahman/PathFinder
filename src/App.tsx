@@ -1,10 +1,9 @@
 //import { useState } from "react";
-import Cell from "./Grid";
 import Grid from "./Grid";
 import "./App.css";
 
 function App() {
-  return <Grid></Grid>;
+  return <Grid className="grid"></Grid>;
 }
 
 export default App;
