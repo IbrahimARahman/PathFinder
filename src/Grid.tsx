@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import "./Grid.css";
 
 const GRID_ROW_LENGTH = 50;
@@ -11,28 +12,24 @@ let styleMap = new Map<number, {}>([
 ]);
 
 interface CellProps {
-  cellType: number;
+  cellT: number;
   onClick: () => void;
 }
-const Cell = ({ cellType, onClick }: CellProps) => {
+
+const Cell = ({ cellT, onClick }: CellProps) => {
+  const [cellType, setCellType] = useState(cellT);
   const [styles, setStyles] = useState(styleMap.get(cellType));
 
-  return (
-    <div
-      className="cell"
-      onClick={() => {
-        onClick();
-        if (cellType == 0) {
-          cellType = 1;
-          setStyles(styleMap.get(cellType));
-        } else if (cellType == 1) {
-          cellType = 0;
-          setStyles(styleMap.get(cellType));
-        }
-      }}
-      style={styles}
-    ></div>
-  );
+  useEffect(() => {
+    setStyles(styleMap.get(cellType));
+  }, [cellType]);
+
+  const handleClick = () => {
+    setCellType(cellType === 0 ? 1 : 0);
+    onClick();
+  };
+
+  return <div className="cell" onClick={handleClick} style={styles}></div>;
 };
 
 interface GridProps {
@@ -40,35 +37,36 @@ interface GridProps {
 }
 
 const Grid = ({ className }: GridProps) => {
-  let grid: number[][] = [];
-  for (let i = 0; i < GRID_COL_LENGTH; i++) {
-    grid[i] = [];
-    for (let j = 0; j < GRID_ROW_LENGTH; j++) {
-      grid[i][j] = 0;
-    }
-  }
-  grid[10][5] = 2;
-  grid[10][45] = 3;
+  const [grid, setGrid] = useState(() => {
+    const newGrid = Array.from({ length: GRID_COL_LENGTH }, () =>
+      Array.from({ length: GRID_ROW_LENGTH }, () => 0)
+    );
+    newGrid[10][5] = 2;
+    newGrid[10][45] = 3;
+    return newGrid;
+  });
 
-  let count = 0;
+  const handleCellClick = (row: number, col: number) => {
+    setGrid((prevGrid) => {
+      const newGrid = [...prevGrid];
+      newGrid[row][col] = prevGrid[row][col] === 0 ? 1 : 0;
+      return newGrid;
+    });
+  };
+
   return (
     <div className={className}>
-      {grid.map((row, rowNum) => {
-        return (
-          <div className="row" key={rowNum}>
-            {row.map((cellType, cellNum) => (
-              <Cell
-                key={count++}
-                cellType={cellType}
-                onClick={() => {
-                  if (cellType == 0) grid[rowNum][cellNum] = 1;
-                  else if (cellType == 1) grid[rowNum][cellNum] = 0;
-                }}
-              ></Cell>
-            ))}
-          </div>
-        );
-      })}
+      {grid.map((row, rowIndex) => (
+        <div key={rowIndex} className="row">
+          {row.map((cellType, colIndex) => (
+            <Cell
+              key={`${rowIndex}-${colIndex}`}
+              cellT={cellType}
+              onClick={() => handleCellClick(rowIndex, colIndex)}
+            />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
