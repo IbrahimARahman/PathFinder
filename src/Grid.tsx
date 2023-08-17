@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useImperativeHandle } from "react";
 import "./Grid.css";
 
 const GRID_ROW_LENGTH = 50;
@@ -47,9 +46,10 @@ const Cell = ({ cellT, isPath, onClick }: CellProps) => {
 
 interface GridProps {
   className: string;
+  isStarted: boolean;
 }
 
-const Grid = ({ className }: GridProps) => {
+const Grid = ({ className, isStarted }: GridProps) => {
   const [grid, setGrid] = useState(() => {
     const newGrid = Array.from({ length: GRID_COL_LENGTH }, () =>
       Array.from({ length: GRID_ROW_LENGTH }, () => 0)
