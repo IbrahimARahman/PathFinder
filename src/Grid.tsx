@@ -16,7 +16,13 @@ interface CellProps {
   onClick: () => void;
 }
 
-const Cell = ({ cellT, onClick }: CellProps) => {
+interface CellProps {
+  cellT: number;
+  isPath?: boolean;
+  onClick: () => void;
+}
+
+const Cell = ({ cellT, isPath, onClick }: CellProps) => {
   const [cellType, setCellType] = useState(cellT);
   const [styles, setStyles] = useState(styleMap.get(cellType));
 
@@ -25,11 +31,18 @@ const Cell = ({ cellT, onClick }: CellProps) => {
   }, [cellType]);
 
   const handleClick = () => {
+    if (cellType === 2 || cellType === 3) return;
     setCellType(cellType === 0 ? 1 : 0);
     onClick();
   };
 
-  return <div className="cell" onClick={handleClick} style={styles}></div>;
+  return (
+    <div
+      className={`cell type-${cellType} ${isPath ? "path" : ""}`}
+      onClick={handleClick}
+      style={styles}
+    ></div>
+  );
 };
 
 interface GridProps {
