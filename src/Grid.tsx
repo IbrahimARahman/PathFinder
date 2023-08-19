@@ -23,18 +23,21 @@ const Grid = ({ className }: GridProps) => {
   const handleCellClick = (row: number, col: number) => {
     setGrid((prevGrid) => {
       const newGrid = [...prevGrid];
-      newGrid[row][col] = prevGrid[row][col] === 0 ? 1 : 0;
+      newGrid[row][col] =
+        prevGrid[row][col] === 0 || prevGrid[row][col] === 4 ? 1 : 0;
 
       return newGrid;
     });
   };
-  //TODO: make sure old path is cleared
+
   const handleRecalculatePath = () => {
     setGrid((prevGrid) => {
-      const newGrid = [...prevGrid];
       const startNode = { x: 10, y: 5, f: 0, g: 0, h: 0 };
       const endNode = { x: 10, y: 45, f: 0, g: 0, h: 0 };
-      const path = aStar(newGrid, startNode, endNode);
+      const path = aStar(prevGrid, startNode, endNode);
+      const newGrid = prevGrid.map((row) =>
+        row.map((cell) => (cell === 4 ? 0 : cell))
+      );
       // Highlight the shortest path
       for (let i = 0; i < path.length; i++) {
         const node = path[i];
@@ -44,9 +47,21 @@ const Grid = ({ className }: GridProps) => {
     });
   };
 
+  const handleReset = () => {
+    setGrid(() => {
+      const newGrid = Array.from({ length: GRID_COL_LENGTH }, () =>
+        Array.from({ length: GRID_ROW_LENGTH }, () => 0)
+      );
+      newGrid[10][5] = 2;
+      newGrid[10][45] = 3;
+      return newGrid;
+    });
+  };
+
   return (
     <>
       <button onClick={handleRecalculatePath}>Recalculate Path</button>
+      <button onClick={handleReset}>Reset</button>
       <div className={className}>
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} className="row">

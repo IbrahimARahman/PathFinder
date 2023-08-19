@@ -28,8 +28,6 @@ const Cell = ({ cellT, onClick }: CellProps) => {
 
   const handleClick = () => {
     if (cellType === 2 || cellType === 3) return;
-    if (cellType === 4) setCellType(1);
-    else setCellType(cellType === 0 ? 1 : 0);
     onClick();
   };
 
