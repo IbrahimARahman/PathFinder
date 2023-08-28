@@ -7,6 +7,7 @@ let styleMap = new Map<number, {}>([
   [2, { backgroundColor: "green" }],
   [3, { backgroundColor: "red" }],
   [4, { backgroundColor: "yellow" }],
+  [5, { backgroundColor: "lightblue" }],
 ]);
 
 interface CellProps {

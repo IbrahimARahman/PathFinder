@@ -27,14 +27,19 @@ background-color: yellow;
 animation: color-change 0.5s ease-in-out;
 }
 
+.cell.type-5 {
+    background-color: lightblue;
+    animation: color-change 0.5s ease-in-out;
+}
+
 @keyframes color-change {
-0% {
-background-color: inherit;
-}
-50% {
-background-color: white;
-}
-100% {
-background-color: inherit;
-}
+    0% {
+    background-color: inherit;
+    }
+    50% {
+    background-color: white;
+    }
+    100% {
+    background-color: inherit;
+    }
 }
