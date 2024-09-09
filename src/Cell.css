@@ -1,45 +1,45 @@
 .cell {
-width: 20px;
-height: 20px;
-border: 1px solid black;
-display: inline-block;
-margin: 0;
-padding: 0;
-transition: background-color 0.5s ease-in-out;
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.5s ease-in-out;
 }
 
 .cell.path {
-background-color: yellow;
+  background-color: yellow;
 }
 
 .cell.type-0 {
-background-color: white;
-animation: color-change 0.5s ease-in-out;
+  background-color: white;
+  animation: color-change 0.5s ease-in-out;
 }
 
 .cell.type-1 {
-background-color: black;
-animation: color-change 0.5s ease-in-out;
+  background-color: black;
+  animation: color-change 0.5s ease-in-out;
 }
 
 .cell.type-4 {
-background-color: yellow;
-animation: color-change 0.5s ease-in-out;
+  background-color: yellow;
+  animation: color-change 0.5s ease-in-out;
 }
 
 .cell.type-5 {
-    background-color: lightblue;
-    animation: color-change 0.5s ease-in-out;
+  background-color: lightblue;
+  animation: color-change 0.5s ease-in-out;
 }
 
 @keyframes color-change {
-    0% {
+  0% {
     background-color: inherit;
-    }
-    50% {
+  }
+  50% {
     background-color: white;
-    }
-    100% {
+  }
+  100% {
     background-color: inherit;
-    }
+  }
 }
